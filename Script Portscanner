@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+# port scanner
+# Programmed by Anis joker Dz
+# Wroten with To help AnyOne
+# ./quickscan -h for usage
+# ./To Visit My Page -F For website : www.root-developers.org
+
+use Socket;
+
+$| = 1; # so \r works right
+
+my ($ip, $protocol, $port, $myhouse, $yourhouse, $log);
+
+$protocol = getprotobyname('tcp');
+
+($ip, $port, $port_stop, $log) = @ARGV;
+
+if ($ip eq "-h") {
+    &usage();
+}
+
+$ip = "localhost" if not $ip;
+$port = 1 if not $port;
+$port_stop = 5000 if not $port_stop;
+$log = "Op3nPoRts.txt" if not $log;
+
+unless (open(LOG_FILE, ">>$log")) {
+    die "Can't open log file $log for writing: $!\n"
+}
+
+# Make file handle hot so the buffer is flushed after every write
+select((select(LOG_FILE), $| = 1)[0]);
+
+print LOG_FILE "Hey I m Port Scanner The following ports are open on $ip between port $port and $port_stop\n\n";
+print "Visit Us www.root-developers.org..\n";
+print "
+ ______          _   _____                                   _          
+| ___ \        | | /  ___|                                 | |          
+| |_/ /__  _ __| |_\ `--.  ___ __ _ _ __  _ __   ___ _ __  | |__  _   _
+|  __/ _ \| '__| __|`--. \/ __/ _` | '_ \| '_ \ / _ \ '__| | '_ \| | | |
+| | | (_) | |  | |_/\__/ / (_| (_| | | | | | | |  __/ |    | |_) | |_| |
+\_|  \___/|_|   \__\____/ \___\__,_|_| |_|_| |_|\___|_|    |_.__/ \__, |
+                                                                   __/ |
+                                                                  |___/
+  ___        _         ___       _              ______                  
+ / _ \      (_)       |_  |     | |             |  _  \                
+/ /_\ \_ __  _ ___      | | ___ | | _____ _ __  | | | |____            
+|  _  | '_ \| / __|     | |/ _ \| |/ / _ \ '__| | | | |_  /            
+| | | | | | | \__ \ /\__/ / (_) |   <  __/ |    | |/ / / /              
+\_| |_/_| |_|_|___/ \____/ \___/|_|\_\___|_|    |___/ /___| v1.0..
+\n";
+
+print "All Rightes Goes TO Anis Joker Dz\n";              
+                                 
+print "Checking $ip for open portsPlease Hold On it may Takes Some Time!..\n";
+
+for (; $port < $port_stop; $port += 1) {
+    socket(SOCKET, PF_INET, SOCK_STREAM, $protocol);
+
+    $yourhouse = inet_aton($ip);
+
+    $myhouse = sockaddr_in($port, $yourhouse);
+
+    if (!connect(SOCKET, $myhouse)) {
+        printf "%d\r", $port;
+    } else {
+        printf "%d  <- open\n", $port;
+        print LOG_FILE "$port\n";
+        close SOCKET || die "close: $!";
+    }
+}
+
+close LOG_FILE || die "close: $!";
+printf "QuickScan complete.\n";
+printf "Those are the open ports for: $ip\n";
+
+sub usage() {
+    print "Usage: ./quickscan [host] [start port] [stop port] [logfile]\n";
+    print "Defaults to localhost and port 1 and port 5000 qsOp3nPoRts.txt\n";
+    exit 0;
+}
