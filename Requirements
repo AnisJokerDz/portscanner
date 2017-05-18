@@ -1,0 +1,10 @@
+You need to have any perl version installed on your machine 
+or you can download it at :https://www.perl.org/get.html
+
+To Install Perl on ubuntu 
+
+# sudo apt-get install perl
+To find a Perl module that's provided as an Ubuntu package:
+
+# apt-cache search perl <module-name>
+Replace the module-name with which you wish to get install.
