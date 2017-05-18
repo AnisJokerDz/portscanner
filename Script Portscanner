@@ -1,9 +1,7 @@
 #!/usr/bin/perl
 # port scanner
 # Programmed by Anis joker Dz
-# Wroten with To help AnyOne
 # ./quickscan -h for usage
-# ./To Visit My Page -F For website : www.root-developers.org
 
 use Socket;
 
